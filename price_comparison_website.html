@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PriceCompare - Find the Best Deals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #2d3748;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 700px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3em;
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .filters-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filters-header h2 {
+            font-size: 1.3em;
+            color: #2d3748;
+        }
+
+        .sort-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-container label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .sort-select {
+            padding: 8px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95em;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .sort-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #4a5568;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .product-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            min-height: 50px;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+            color: #f6ad55;
+            font-size: 0.9em;
+        }
+
+        .price-comparison {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 2px solid #f7fafc;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f7fafc;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .price-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .store-name {
+            font-weight: 600;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .store-logo {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+        }
+
+        .price {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .best-price {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .best-price .store-name,
+        .best-price .price {
+            color: white;
+        }
+
+        .best-price-badge {
+            background: #48bb78;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+
+        .no-results-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .no-results h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+
+        .stats-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-icon {
+            font-size: 1.5em;
+        }
+
+        .stat-text {
+            font-size: 0.9em;
+            color: #718096;
+        }
+
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                font-size: 1.5em;
+            }
+
+            .filters-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                🏷️ PriceCompare
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-box" id="searchInput" placeholder="Search for products...">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-icon">📦</span>
+                <div>
+                    <div class="stat-text">Total Products</div>
+                    <div class="stat-value" id="totalProducts">0</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🏪</span>
+                <div>
+                    <div class="stat-text">Stores Compared</div>
+                    <div class="stat-value">12</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <div>
+                    <div class="stat-text">Avg. Savings</div>
+                    <div class="stat-value">23%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <div class="filters-header">
+                <h2>Browse Products</h2>
+                <div class="sort-container">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect" class="sort-select">
+                        <option value="name">Name</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All Products</button>
+                <button class="filter-btn" data-category="Laptops">Laptops</button>
+                <button class="filter-btn" data-category="Smartphones">Smartphones</button>
+                <button class="filter-btn" data-category="Headphones">Headphones</button>
+                <button class="filter-btn" data-category="Tablets">Tablets</button>
+                <button class="filter-btn" data-category="Cameras">Cameras</button>
+            </div>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "MacBook Pro 14\" M3",
+                category: "Laptops",
+                rating: 4.8,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E💻%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "TechStore", price: 1999, logo: "🔵" },
+                    { store: "ElectroMart", price: 2099, logo: "🟢" },
+                    { store: "GadgetHub", price: 2049, logo: "🔴" }
+                ]
+            },
+            {
+                id: 2,
+                name: "iPhone 15 Pro Max",
+                category: "Smartphones",
+                rating: 4.7,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E📱%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "PhoneWorld", price: 1199, logo: "🟡" },
+                    { store: "MobileMart", price: 1249, logo: "🟣" },
+                    { store: "TechStore", price: 1189, logo: "🔵" }
+                ]
+            },
+            {
+                id: 3,
+                name: "Sony WH-1000XM5 Headphones",
+                category: "Headphones",
+                rating: 4.9,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E🎧%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "AudioShop", price: 399, logo: "🟠" },
+                    { store: "ElectroMart", price: 419, logo: "🟢" },
+                    { store: "SoundPro", price: 389, logo: "⚫" }
+                ]
+            },
+            {
+                id: 4,
+                name: "Samsung Galaxy Tab S9",
+                category: "Tablets",
+                rating: 4.6,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E📲%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "TabletZone", price: 799, logo: "🔵" },
+                    { store: "GadgetHub", price: 829, logo: "🔴" },
+                    { store: "ElectroMart", price: 819, logo: "🟢" }
+                ]
+            },
+            {
+                id: 5,
+                name: "Dell XPS 15",
+                category: "Laptops",
+                rating: 4.7,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E💻%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "TechStore", price: 1799, logo: "🔵" },
+                    { store: "ComputerWorld", price: 1849, logo: "🟣" },
+                    { store: "ElectroMart", price: 1769, logo: "🟢" }
+                ]
+            },
+            {
+                id: 6,
+                name: "Canon EOS R6 Mark II",
+                category: "Cameras",
+                rating: 4.8,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E📷%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "PhotoPro", price: 2499, logo: "🟡" },
+                    { store: "CameraStore", price: 2599, logo: "🔴" },
+                    { store: "ElectroMart", price: 2549, logo: "🟢" }
+                ]
+            },
+            {
+                id: 7,
+                name: "Google Pixel 8 Pro",
+                category: "Smartphones",
+                rating: 4.6,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E📱%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "PhoneWorld", price: 999, logo: "🟡" },
+                    { store: "MobileMart", price: 1049, logo: "🟣" },
+                    { store: "GadgetHub", price: 979, logo: "🔴" }
+                ]
+            },
+            {
+                id: 8,
+                name: "AirPods Pro (2nd Gen)",
+                category: "Headphones",
+                rating: 4.7,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E🎧%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "AudioShop", price: 249, logo: "🟠" },
+                    { store: "TechStore", price: 249, logo: "🔵" },
+                    { store: "ElectroMart", price: 239, logo: "🟢" }
+                ]
+            },
+            {
+                id: 9,
+                name: "iPad Pro 12.9\" M2",
+                category: "Tablets",
+                rating: 4.8,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E📲%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "TabletZone", price: 1099, logo: "🔵" },
+                    { store: "TechStore", price: 1149, logo: "🔵" },
+                    { store: "GadgetHub", price: 1089, logo: "🔴" }
+                ]
+            },
+            {
+                id: 10,
+                name: "Sony A7 IV Camera",
+                category: "Cameras",
+                rating: 4.9,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E📷%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "PhotoPro", price: 2499, logo: "🟡" },
+                    { store: "CameraStore", price: 2549, logo: "🔴" },
+                    { store: "ElectroMart", price: 2479, logo: "🟢" }
+                ]
+            },
+            {
+                id: 11,
+                name: "Lenovo ThinkPad X1 Carbon",
+                category: "Laptops",
+                rating: 4.6,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E💻%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "TechStore", price: 1599, logo: "🔵" },
+                    { store: "ComputerWorld", price: 1649, logo: "🟣" },
+                    { store: "BusinessTech", price: 1579, logo: "⚫" }
+                ]
+            },
+            {
+                id: 12,
+                name: "Bose QuietComfort 45",
+                category: "Headphones",
+                rating: 4.7,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='60' text-anchor='middle' dy='.3em' fill='%23999'%3E🎧%3C/text%3E%3C/svg%3E",
+                prices: [
+                    { store: "AudioShop", price: 329, logo: "🟠" },
+                    { store: "SoundPro", price: 349, logo: "⚫" },
+                    { store: "ElectroMart", price: 319, logo: "🟢" }
+                ]
+            }
+        ];
+
+        let currentCategory = 'all';
+        let currentSort = 'name';
+        let searchQuery = '';
+
+        function getMinPrice(product) {
+            return Math.min(...product.prices.map(p => p.price));
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            let filtered = products;
+
+            // Filter by category
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === currentCategory);
+            }
+
+            // Filter by search
+            if (searchQuery) {
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    p.category.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            }
+
+            // Sort
+            filtered = [...filtered].sort((a, b) => {
+                switch(currentSort) {
+                    case 'price-low':
+                        return getMinPrice(a) - getMinPrice(b);
+                    case 'price-high':
+                        return getMinPrice(b) - getMinPrice(a);
+                    case 'rating':
+                        return b.rating - a.rating;
+                    case 'name':
+                    default:
+                        return a.name.localeCompare(b.name);
+                }
+            });
+
+            document.getElementById('totalProducts').textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results" style="grid-column: 1/-1;">
+                        <div class="no-results-icon">🔍</div>
+                        <h3>No products found</h3>
+                        <p>Try adjusting your filters or search query</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(product => {
+                const sortedPrices = [...product.prices].sort((a, b) => a.price - b.price);
+                const stars = '⭐'.repeat(Math.floor(product.rating));
+                
+                return `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <h3 class="product-name">${product.name}</h3>
+                        <span class="product-category">${product.category}</span>
+                        <div class="product-rating">
+                            ${stars} <span style="color: #4a5568; margin-left: 5px;">${product.rating}</span>
+                        </div>
+                        <div class="price-comparison">
+                            ${sortedPrices.map((price, idx) => `
+                                <div class="price-item ${idx === 0 ? 'best-price' : ''}">
+                                    <div class="store-name">
+                                        <span class="store-logo">${price.logo}</span>
+                                        ${price.store}
+                                        ${idx === 0 ? '<span class="best-price-badge">BEST PRICE</span>' : ''}
+                                    </div>
+                                    <div class="price">$${price.price}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Event listeners
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.dataset.category;
+                renderProducts();
+            });
+        });
+
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            currentSort = this.value;
+            renderProducts();
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            searchQuery = this.value;
+            renderProducts();
+        });
+
+        // Initialize
+        renderProducts();
+    </script>
+</body>
+</html>
