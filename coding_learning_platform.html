@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeLearn - Master Programming Languages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .languages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .language-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .language-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .language-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .language-name {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .language-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .lessons-count {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .btn-start {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-start:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .feature-desc {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .learning-path {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .path-title {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+
+        .path-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 0 auto 15px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .step-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .step-desc {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .code-preview {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .preview-title {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .code-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .code-tab {
+            padding: 12px 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .code-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .code-content {
+            display: none;
+        }
+
+        .code-content.active {
+            display: block;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .function {
+            color: #dcdcaa;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .path-steps {
+                flex-direction: column;
+            }
+
+            .languages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">💻 CodeLearn</div>
+            <div class="nav-links">
+                <a href="#courses">Courses</a>
+                <a href="#features">Features</a>
+                <a href="#path">Learning Path</a>
+                <a href="#examples">Examples</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Master Programming Languages</h1>
+            <p>Learn HTML, CSS, JavaScript, and Python with interactive lessons and real-world projects</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Lessons</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Students</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" id="courses">Choose Your Language</h2>
+        <div class="languages-grid">
+            <div class="language-card" onclick="showLanguageInfo('HTML')">
+                <div class="language-icon">🌐</div>
+                <div class="language-name">HTML</div>
+                <div class="language-desc">Learn the foundation of web development. Create structure and content for websites.</div>
+                <div class="lessons-count">📚 35 Lessons</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%" data-progress="75"></div>
+                </div>
+                <button class="btn-start">Start Learning</button>
+            </div>
+
+            <div class="language-card" onclick="showLanguageInfo('CSS')">
+                <div class="language-icon">🎨</div>
+                <div class="language-name">CSS</div>
+                <div class="language-desc">Style your websites beautifully. Master layouts, animations, and responsive design.</div>
+                <div class="lessons-count">📚 40 Lessons</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%" data-progress="65"></div>
+                </div>
+                <button class="btn-start">Start Learning</button>
+            </div>
+
+            <div class="language-card" onclick="showLanguageInfo('JavaScript')">
+                <div class="language-icon">⚡</div>
+                <div class="language-name">JavaScript</div>
+                <div class="language-desc">Add interactivity to your websites. Build dynamic web applications and games.</div>
+                <div class="lessons-count">📚 50 Lessons</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%" data-progress="55"></div>
+                </div>
+                <button class="btn-start">Start Learning</button>
+            </div>
+
+            <div class="language-card" onclick="showLanguageInfo('Python')">
+                <div class="language-icon">🐍</div>
+                <div class="language-name">Python</div>
+                <div class="language-desc">Learn the most popular programming language. Perfect for beginners and professionals.</div>
+                <div class="lessons-count">📚 45 Lessons</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%" data-progress="60"></div>
+                </div>
+                <button class="btn-start">Start Learning</button>
+            </div>
+        </div>
+
+        <h2 class="section-title" id="features">Why Choose CodeLearn?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <div class="feature-title">Interactive Lessons</div>
+                <div class="feature-desc">Learn by doing with hands-on coding exercises and instant feedback</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">Real Projects</div>
+                <div class="feature-desc">Build actual websites and applications to add to your portfolio</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⏰</div>
+                <div class="feature-title">Learn at Your Pace</div>
+                <div class="feature-desc">Study anytime, anywhere with lifetime access to all courses</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">👨‍🏫</div>
+                <div class="feature-title">Expert Teachers</div>
+                <div class="feature-desc">Learn from industry professionals with years of experience</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <div class="feature-title">Certificates</div>
+                <div class="feature-desc">Earn certificates upon completion to showcase your skills</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <div class="feature-title">Community Support</div>
+                <div class="feature-desc">Join thousands of students and get help when you need it</div>
+            </div>
+        </div>
+
+        <div class="learning-path" id="path">
+            <div class="path-title">Your Learning Path</div>
+            <div class="path-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">HTML Basics</div>
+                    <div class="step-desc">Learn structure & tags</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">CSS Styling</div>
+                    <div class="step-desc">Design & layouts</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">JavaScript</div>
+                    <div class="step-desc">Add interactivity</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Python</div>
+                    <div class="step-desc">Backend & automation</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Build Projects</div>
+                    <div class="step-desc">Create real apps</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-preview" id="examples">
+            <div class="preview-title">Code Examples</div>
+            <div class="code-tabs">
+                <button class="code-tab active" onclick="showCode('html')">HTML</button>
+                <button class="code-tab" onclick="showCode('css')">CSS</button>
+                <button class="code-tab" onclick="showCode('js')">JavaScript</button>
+                <button class="code-tab" onclick="showCode('python')">Python</button>
+            </div>
+
+            <div id="html" class="code-content active">
+                <div class="code-block">
+<span class="comment">&lt;!-- Simple HTML Structure --&gt;</span>
+<span class="keyword">&lt;!DOCTYPE</span> html<span class="keyword">&gt;</span>
+<span class="keyword">&lt;html&gt;</span>
+<span class="keyword">&lt;head&gt;</span>
+    <span class="keyword">&lt;title&gt;</span>My First Page<span class="keyword">&lt;/title&gt;</span>
+<span class="keyword">&lt;/head&gt;</span>
+<span class="keyword">&lt;body&gt;</span>
+    <span class="keyword">&lt;h1&gt;</span>Welcome to CodeLearn!<span class="keyword">&lt;/h1&gt;</span>
+    <span class="keyword">&lt;p&gt;</span>Start learning programming today.<span class="keyword">&lt;/p&gt;</span>
+    <span class="keyword">&lt;button&gt;</span>Click Me<span class="keyword">&lt;/button&gt;</span>
+<span class="keyword">&lt;/body&gt;</span>
+<span class="keyword">&lt;/html&gt;</span>
+                </div>
+            </div>
+
+            <div id="css" class="code-content">
+                <div class="code-block">
+<span class="comment">/* Modern CSS Styling */</span>
+<span class="keyword">body</span> {
+    <span class="function">font-family</span>: <span class="string">'Arial', sans-serif</span>;
+    <span class="function">background</span>: <span class="string">linear-gradient(135deg, #667eea, #764ba2)</span>;
+    <span class="function">margin</span>: 0;
+    <span class="function">padding</span>: 20px;
+}
+
+<span class="keyword">h1</span> {
+    <span class="function">color</span>: <span class="string">#fff</span>;
+    <span class="function">text-align</span>: center;
+    <span class="function">font-size</span>: 3em;
+}
+
+<span class="keyword">button</span> {
+    <span class="function">padding</span>: 15px 30px;
+    <span class="function">background</span>: <span class="string">#667eea</span>;
+    <span class="function">color</span>: <span class="string">white</span>;
+    <span class="function">border</span>: none;
+    <span class="function">border-radius</span>: 10px;
+    <span class="function">cursor</span>: pointer;
+}
+                </div>
+            </div>
+
+            <div id="js" class="code-content">
+                <div class="code-block">
+<span class="comment">// Interactive JavaScript</span>
+<span class="keyword">const</span> button = document.<span class="function">querySelector</span>(<span class="string">'button'</span>);
+
+button.<span class="function">addEventListener</span>(<span class="string">'click'</span>, <span class="keyword">function</span>() {
+    <span class="function">alert</span>(<span class="string">'Hello, CodeLearn Student!'</span>);
+    <span class="keyword">const</span> name = <span class="function">prompt</span>(<span class="string">'What is your name?'</span>);
+    console.<span class="function">log</span>(<span class="string">`Welcome, ${name}!`</span>);
+});
+
+<span class="comment">// Calculate sum</span>
+<span class="keyword">function</span> <span class="function">add</span>(a, b) {
+    <span class="keyword">return</span> a + b;
+}
+
+console.<span class="function">log</span>(<span class="function">add</span>(5, 3)); <span class="comment">// Output: 8</span>
+                </div>
+            </div>
+
+            <div id="python" class="code-content">
+                <div class="code-block">
+<span class="comment"># Python Basics</span>
+<span class="keyword">def</span> <span class="function">greet</span>(name):
+    <span class="keyword">return</span> <span class="string">f"Hello, {name}! Welcome to Python!"</span>
+
+<span class="comment"># Variables and data types</span>
+student_name = <span class="string">"Alice"</span>
+age = <span class="string">20</span>
+languages = [<span class="string">"HTML"</span>, <span class="string">"CSS"</span>, <span class="string">"JavaScript"</span>, <span class="string">"Python"</span>]
+
+<span class="keyword">print</span>(<span class="function">greet</span>(student_name))
+
+<span class="comment"># Loop through languages</span>
+<span class="keyword">for</span> lang <span class="keyword">in</span> languages:
+    <span class="keyword">print</span>(<span class="string">f"Learning: {lang}"</span>)
+
+<span class="comment"># Simple calculator</span>
+<span class="keyword">def</span> <span class="function">calculate</span>(a, b, operation):
+    <span class="keyword">if</span> operation == <span class="string">'add'</span>:
+        <span class="keyword">return</span> a + b
+    <span class="keyword">elif</span> operation == <span class="string">'multiply'</span>:
+        <span class="keyword">return</span> a * b
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#blog">Blog</a>
+            </div>
+            <p style="color: #666; margin-top: 20px;">© 2025 CodeLearn. All rights reserved. Start your coding journey today! 🚀</p>
+        </div>
+    </footer>
+
+    <script>
+        // Animate progress bars on page load
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            setTimeout(() => {
+                progressBars.forEach(bar => {
+                    const progress = bar.getAttribute('data-progress');
+                    bar.style.width = progress + '%';
+                });
+            }, 500);
+        });
+
+        // Show language info
+        function showLanguageInfo(language) {
+            alert(`Starting ${language} course! Get ready to learn amazing skills!`);
+        }
+
+        // Code tab switching
+        function showCode(lang) {
+            // Hide all code contents
+            document.querySelectorAll('.code-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.code-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(lang).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
